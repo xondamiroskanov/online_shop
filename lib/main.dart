@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:online_shop/pages/cart_shop_page.dart';
 import 'package:online_shop/pages/home_page.dart';
 import 'package:online_shop/pages/product_details.dart';
+import 'package:online_shop/providers/cart_item.dart';
 import 'package:online_shop/providers/products.dart';
 import 'package:provider/provider.dart';
 
@@ -13,22 +16,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Products>(
-      create: (BuildContext context) {
-        return Products();
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Products>(
+          create: (BuildContext context) {
+            return Products();
+          },
+        ),
+        ChangeNotifierProvider<Cart>(create: (BuildContext context) {
+          return Cart();
+        })
+      ],
       child: MaterialApp(
         theme: ThemeData(
-          fontFamily: "HindSiliguri",
-          primarySwatch: Colors.teal
-        ),
+            fontFamily: GoogleFonts.montserrat().fontFamily,
+            primarySwatch: Colors.teal),
         debugShowCheckedModeBanner: false,
         home: HomePage(),
         routes: {
-          ProductDetailsPage.routeName : (context)=>ProductDetailsPage()
+          ProductDetailsPage.routeName: (context) => ProductDetailsPage(),
+          CartShopPage.routeName: (context) => CartShopPage()
         },
       ),
     );
   }
 }
-
