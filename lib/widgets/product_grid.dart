@@ -13,7 +13,6 @@ class ProductGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final productProvider = Provider.of<Products>(context);
     final productData = isFavorite ? productProvider.favorite : productProvider.productsList;
-    print(isFavorite);
     return GridView.builder(
       padding: EdgeInsets.all(16),
       itemCount: productData.length,

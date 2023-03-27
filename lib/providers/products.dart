@@ -7,7 +7,8 @@ class Products with ChangeNotifier {
     ProductModel(
         name: "Macbook Pro",
         price: "580",
-        description: "cori 5 ram 8",
+        description:
+        "Картинки по запросу macbook for description The MacBook is Apple's third laptop computer family, introduced in 2006. Prior laptops were the PowerBook and iBook. The MacBook Air and MacBook Pro are the remaining models. The original MacBook was dropped in 2011 only to be resurrected thinner and lighter in 2015 and then discontinued in 2019.",
         image:
         "https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8TWFjYm9vayUyMHByb3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
         id: "p1"),

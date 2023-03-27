@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:online_shop/models/cart_item_model.dart';
 
 class Cart with ChangeNotifier {
@@ -15,7 +16,7 @@ class Cart with ChangeNotifier {
   String totalPrice() {
     int total = 0;
     _items.forEach((key, value) {
-      total += int.parse(value.price);
+      total += int.parse(value.price) * value.number;
     });
     return total.toString();
   }
@@ -59,9 +60,19 @@ class Cart with ChangeNotifier {
               title: value.title,
               price: value.price,
               image: value.image,
-              number: value.number-1,
+              number: value.number - 1,
               id: value.id));
     }
+    notifyListeners();
+  }
+
+  void deleteCartProduct(String productId) {
+    _items.remove(productId);
+    notifyListeners();
+  }
+
+  void clear(){
+    _items.clear();
     notifyListeners();
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:online_shop/widgets/app_drawer.dart';
 import 'package:online_shop/widgets/custom_shop_icon.dart';
 import 'package:online_shop/widgets/product_grid.dart';
-
 
 enum Filter { All, Favortites }
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
-
+  static const routeName = "/HomePage";
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -18,34 +18,36 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            PopupMenuButton(onSelected: (Filter filter) {
-              setState(() {
-                if (filter == Filter.Favortites) {
-                   isFavorite = true;
-                } else {
-                  isFavorite = false;
-                }
-              });
-            }, itemBuilder: (BuildContext context) {
-              return const [
-                PopupMenuItem(
-                  child: Text(
-                    "Sevimlilar",
-                  ),
-                  value: Filter.Favortites,
+      appBar: AppBar(
+        actions: [
+          PopupMenuButton(onSelected: (Filter filter) {
+            setState(() {
+              if (filter == Filter.Favortites) {
+                isFavorite = true;
+              } else {
+                isFavorite = false;
+              }
+            });
+          }, itemBuilder: (BuildContext context) {
+            return const [
+              PopupMenuItem(
+                child: Text(
+                  "Sevimlilar",
                 ),
-                PopupMenuItem(
-                  child: Text("Barchasi"),
-                  value: Filter.All,
-                ),
-              ];
-            }),
-            CustomShopIcon()
-          ],
-          title: Text("My shop"),
-        ),
-        body: ProductGrid(isFavorite));
+                value: Filter.Favortites,
+              ),
+              PopupMenuItem(
+                child: Text("Barchasi"),
+                value: Filter.All,
+              ),
+            ];
+          }),
+          CustomShopIcon()
+        ],
+        title: Text("My shop"),
+      ),
+      body: ProductGrid(isFavorite),
+      drawer: AppDrawer(),
+    );
   }
 }

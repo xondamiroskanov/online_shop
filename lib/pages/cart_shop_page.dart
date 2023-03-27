@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_shop/providers/order.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart_item.dart';
@@ -11,7 +12,7 @@ class CartShopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartShop = Provider.of<Cart>(context);
-    print(cartShop.itemCount());
+    final orderProduct = Provider.of<OrderProduct>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Buyirtmalar"),
@@ -46,7 +47,12 @@ class CartShopPage extends StatelessWidget {
                         ),
                       )),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      orderProduct.orderAddProduct(
+                          cartShop.items.values.toList(),
+                          double.parse(cartShop.totalPrice()));
+                      cartShop.clear();
+                    },
                     child: Text(
                       "Buyirtma qilish",
                       style: TextStyle(
