@@ -49,7 +49,7 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void minusProduct(String productId) {
+  void minusProduct(String productId,{bool isCartItem = false}) {
     if (!_items.containsKey(productId)) {
       return;
     }
@@ -62,6 +62,9 @@ class Cart with ChangeNotifier {
               image: value.image,
               number: value.number - 1,
               id: value.id));
+    }
+    else if(isCartItem){
+      _items.remove(productId);
     }
     notifyListeners();
   }

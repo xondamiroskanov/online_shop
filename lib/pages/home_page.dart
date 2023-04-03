@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           }, itemBuilder: (BuildContext context) {
             return const [
               PopupMenuItem(
-                child: Text(
+                child:  Text(
                   "Sevimlilar",
                 ),
                 value: Filter.Favortites,

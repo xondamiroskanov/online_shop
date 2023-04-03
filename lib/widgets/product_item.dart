@@ -10,10 +10,28 @@ class ProductItem extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void showAddCart(context, Function() removeItemCart) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Tanlangan mahsulot savatga qo'shildi",
+        ),
+        action: SnackBarAction(
+          label: "Bekor qilish",
+          onPressed: () {
+            removeItemCart();
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<ProductModel>(context, listen: false);
     final cart = Provider.of<Cart>(context);
+
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(12)),
       child: GridTile(
@@ -30,6 +48,7 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           trailing: IconButton(
             onPressed: () {
+              showAddCart(context, () => cart.minusProduct(product.id,isCartItem: true));
               cart.addToProduct(
                   product.name, product.image, product.price, product.id);
             },
@@ -42,13 +61,14 @@ class ProductItem extends StatelessWidget {
           leading: Consumer<ProductModel>(
             builder: (BuildContext context, pro, Widget? child) {
               return IconButton(
-                  onPressed: () {
-                    pro.toogleDone();
-                  },
-                  icon: Icon(
-                    pro.isFavorite ? Icons.favorite : Icons.favorite_outline,
-                    color: Colors.teal,
-                  ));
+                onPressed: () {
+                  pro.toogleDone();
+                },
+                icon: Icon(
+                  pro.isFavorite ? Icons.favorite : Icons.favorite_outline,
+                  color: Colors.teal,
+                ),
+              );
             },
           ),
           title: Text(

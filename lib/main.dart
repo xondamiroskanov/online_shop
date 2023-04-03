@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_shop/pages/cart_shop_page.dart';
+import 'package:online_shop/pages/edit_new_product_page.dart';
 import 'package:online_shop/pages/home_page.dart';
+import 'package:online_shop/pages/manage_product.dart';
 import 'package:online_shop/pages/orders_page.dart';
 import 'package:online_shop/pages/product_details.dart';
 import 'package:online_shop/providers/cart_item.dart';
@@ -42,7 +44,9 @@ class MyApp extends StatelessWidget {
           HomePage.routeName:(context)=>HomePage(),
           ProductDetailsPage.routeName: (context) => ProductDetailsPage(),
           CartShopPage.routeName: (context) => CartShopPage(),
-          OrdersPage.routeName:(context)=>OrdersPage()
+          OrdersPage.routeName:(context)=>OrdersPage(),
+          ManageProduct.routeName:(context)=>ManageProduct(),
+          EditNewAddProduct.routeName:(context)=>EditNewAddProduct()
         },
       ),
     );

@@ -16,7 +16,6 @@ class ProductDetailsPage extends StatelessWidget {
     final productPro = Provider.of<Products>(context)
         .productsList
         .firstWhere((element) => element.id == routeProductModel);
-    final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(productPro.name),

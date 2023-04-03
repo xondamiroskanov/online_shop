@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_shop/pages/home_page.dart';
+import 'package:online_shop/pages/manage_product.dart';
 import 'package:online_shop/pages/orders_page.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -18,21 +19,33 @@ class AppDrawer extends StatelessWidget {
             onTap: (){
               Navigator.of(context).pushReplacementNamed(OrdersPage.routeName);
             },
-            child: ListTile(
+            child: const ListTile(
               contentPadding: EdgeInsets.all(10),
               leading: Icon(Icons.payment),
-              title: Text("Buyirtmalar",style: TextStyle(fontWeight: FontWeight.bold),),
+              title: Text("Buyurtmalar",style: TextStyle(fontWeight: FontWeight.bold),),
             ),
           ),
           GestureDetector(
             onTap: (){
               Navigator.of(context).pushReplacementNamed(HomePage.routeName);
             },
-            child: ListTile(
+            child: const ListTile(
               contentPadding: EdgeInsets.all(10),
               leading: Icon(Icons.production_quantity_limits_sharp),
               title: Text("Mahsulotlar",style: TextStyle(fontWeight: FontWeight.bold),),
             ),
+
+          ),
+          GestureDetector(
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed(ManageProduct.routeName);
+            },
+            child: const ListTile(
+              contentPadding: EdgeInsets.all(10),
+              leading: Icon(Icons.settings),
+              title: Text("Mahsulotlarni boshqarish",style: TextStyle(fontWeight: FontWeight.bold),),
+            ),
+
           ),
         ],
       ),

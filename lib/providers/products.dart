@@ -35,7 +35,15 @@ class Products with ChangeNotifier {
   List<ProductModel> get favorite{
     return _productsList.where((element) => element.isFavorite).toList();
   }
-  void addProduct() {
+  void addProduct(ProductModel productModel) {
+    _productsList.add(productModel);
     notifyListeners();
+  }
+  void updateProduct(ProductModel newProduct){
+    final indexProduct = _productsList.indexWhere((element) => element.id == newProduct.id);
+    if(indexProduct>=0){
+      _productsList[indexProduct] = newProduct;
+      notifyListeners();
+    }
   }
 }
