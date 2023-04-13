@@ -2,9 +2,8 @@ class CartItem {
   final String title;
   final String price;
   final String image;
-  int number;
+  double number;
   final String id;
-
   CartItem({
     required this.title,
     required this.price,

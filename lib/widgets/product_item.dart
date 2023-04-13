@@ -14,7 +14,7 @@ class ProductItem extends StatelessWidget {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
+        content: const Text(
           "Tanlangan mahsulot savatga qo'shildi",
         ),
         action: SnackBarAction(
@@ -48,7 +48,8 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           trailing: IconButton(
             onPressed: () {
-              showAddCart(context, () => cart.minusProduct(product.id,isCartItem: true));
+              showAddCart(context,
+                  () => cart.minusProduct(product.id, isCartItem: true));
               cart.addToProduct(
                   product.name, product.image, product.price, product.id);
             },
@@ -61,8 +62,16 @@ class ProductItem extends StatelessWidget {
           leading: Consumer<ProductModel>(
             builder: (BuildContext context, pro, Widget? child) {
               return IconButton(
-                onPressed: () {
-                  pro.toogleDone();
+                onPressed: () async {
+                  try {
+                    await pro.toogleDone();
+                  } catch (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Mahsulotni sevimli qilib bo'lmadi"),
+                      ),
+                    );
+                  }
                 },
                 icon: Icon(
                   pro.isFavorite ? Icons.favorite : Icons.favorite_outline,

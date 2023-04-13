@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class ProductModel with ChangeNotifier{
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class ProductModel with ChangeNotifier {
   final String name;
   final String price;
   final String description;
@@ -16,8 +19,25 @@ class ProductModel with ChangeNotifier{
       required this.id,
       this.isFavorite = false});
 
-  void toogleDone(){
-    isFavorite = ! isFavorite;
+  Future<void> toogleDone() async {
+    var oldFavorite = isFavorite;
+    isFavorite = !isFavorite;
     notifyListeners();
+    final uri = Uri.parse(
+        "https://fir-81ed4-default-rtdb.firebaseio.com/products/$id.json");
+    try {
+     final response =  await http.patch(
+        uri,
+        body: jsonEncode({'isFavorite': isFavorite}),
+      );
+      if(response.statusCode >=400){
+        isFavorite = oldFavorite;
+        notifyListeners();
+      }
+    } catch (error) {
+      isFavorite = oldFavorite;
+      notifyListeners();
+      rethrow;
+    }
   }
 }

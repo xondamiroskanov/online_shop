@@ -1,49 +1,120 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../models/product_model.dart';
 
 class Products with ChangeNotifier {
-  List<ProductModel> _productsList = [
-    ProductModel(
-        name: "Macbook Pro",
-        price: "580",
-        description:
-        "Картинки по запросу macbook for description The MacBook is Apple's third laptop computer family, introduced in 2006. Prior laptops were the PowerBook and iBook. The MacBook Air and MacBook Pro are the remaining models. The original MacBook was dropped in 2011 only to be resurrected thinner and lighter in 2015 and then discontinued in 2019.",
-        image:
-        "https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8TWFjYm9vayUyMHByb3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
-        id: "p1"),
-    ProductModel(
-        name: "Iphone 12",
-        price: "600",
-        description: "yomks 99 % gold color",
-        image:
-        "https://images.unsplash.com/photo-1609692814859-9ebe00526a8e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aXBob25lJTIwMTIlMjBwcm98ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
-        id: "p2"),
-    ProductModel(
-        name: "Smart watch",
-        price: "100",
-        description: "elektron smart watch",
-        image:
-        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c21hcnQlMjB3YXRjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
-        id: "p3"),
-  ];
+  List<ProductModel> _productsList = [];
 
   List<ProductModel> get productsList {
     return [..._productsList];
   }
 
-  List<ProductModel> get favorite{
+  List<ProductModel> get favorite {
     return _productsList.where((element) => element.isFavorite).toList();
   }
-  void addProduct(ProductModel productModel) {
-    _productsList.add(productModel);
-    notifyListeners();
+
+  Future<void> getProducts() async {
+    final uri = Uri.parse(
+        "https://fir-81ed4-default-rtdb.firebaseio.com/products.json");
+    try {
+      final response = await http.get(uri);
+      if (jsonDecode(response.body) != null) {
+        final productData = jsonDecode(response.body) as Map<String, dynamic>;
+        List<ProductModel> loadedProduct = [];
+        productData.forEach((productId, product) {
+          loadedProduct.add(
+            ProductModel(
+              name: product['name'],
+              price: product['price'],
+              description: product['description'],
+              image: product['image'],
+              id: productId,
+            ),
+          );
+        });
+        _productsList = loadedProduct;
+        notifyListeners();
+      }
+    } catch (error) {
+      rethrow;
+    }
   }
-  void updateProduct(ProductModel newProduct){
-    final indexProduct = _productsList.indexWhere((element) => element.id == newProduct.id);
-    if(indexProduct>=0){
-      _productsList[indexProduct] = newProduct;
+
+  Future<void> addProduct(ProductModel productModel) async {
+    final uri = Uri.parse(
+        "https://fir-81ed4-default-rtdb.firebaseio.com/products.json");
+    try {
+      final response = await http.post(
+        uri,
+        body: jsonEncode(
+          {
+            "name": productModel.name,
+            "price": productModel.price,
+            "description": productModel.description,
+            "image": productModel.image,
+            "isFavorite": productModel.isFavorite
+          },
+        ),
+      );
+      _productsList.add(
+        ProductModel(
+          name: productModel.name,
+          price: productModel.price,
+          description: productModel.description,
+          image: productModel.image,
+          id: (jsonDecode(response.body) as Map<String, dynamic>)['name'],
+        ),
+      );
       notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateProduct(ProductModel newProduct) async {
+    final uri = Uri.parse(
+        "https://fir-81ed4-default-rtdb.firebaseio.com/products/${newProduct.id}.json");
+    final indexProduct =
+        _productsList.indexWhere((element) => element.id == newProduct.id);
+    if (indexProduct >= 0) {
+      try {
+        await http.patch(uri,
+            body: jsonEncode({
+              "name": newProduct.name,
+              "price": newProduct.price,
+              "description": newProduct.description,
+              "image": newProduct.image
+            }));
+        _productsList[indexProduct] = newProduct;
+        notifyListeners();
+      } catch (error) {
+        rethrow;
+      }
+    }
+  }
+
+  Future<void> removeProductItem(removeId) async {
+    final uri = Uri.parse(
+        "https://fir-81ed4-default-rtdb.firebaseio.com/products/$removeId.json");
+    try {
+      var returnAddPro =
+          _productsList.firstWhere((element) => element.id == removeId);
+      final indexPro =
+          _productsList.indexWhere((element) => element.id == removeId);
+      _productsList.removeWhere((element) => element.id == removeId);
+      notifyListeners();
+      final response = await http.delete(uri);
+      if (response.statusCode >= 400) {
+        _productsList.insert(indexPro, returnAddPro);
+        notifyListeners();
+        throw HttpException(
+            "Kechirasiz mahsulotni o'chirishda xatolik sodir bo'ldi");
+      }
+    } catch (error) {
+      rethrow;
     }
   }
 }

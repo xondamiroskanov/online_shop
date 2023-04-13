@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/cart_item_model.dart';
 
 class OrderListTile extends StatefulWidget {
-  final String price;
+  final double price;
   final DateTime time;
   final List<CartItem> products;
 
@@ -57,12 +57,12 @@ class _OrderListTileState extends State<OrderListTile> {
                     return ListTile(
                       title: Text(
                         widget.products[index].title,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.black87),
                       ),
                       trailing: Text(
                         "${widget.products[index].number} * ${widget.products[index].price}\$",
-                        style: TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     );
                   }),

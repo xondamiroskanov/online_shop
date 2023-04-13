@@ -44,13 +44,13 @@ class ProductDetailsPage extends StatelessWidget {
       bottomSheet: BottomAppBar(
         child: Container(
           padding: EdgeInsets.all(16),
-          height: 80,
+          height: 83,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
-                  Text(
+                  const Text(
                     "Narxi:",
                     style: TextStyle(fontSize: 18, color: Colors.black45),
                   ),
@@ -63,21 +63,24 @@ class ProductDetailsPage extends StatelessWidget {
               Consumer<Cart>(builder: (context, cart, child) {
                 final isCartAddProduct = cart.items.containsKey(productPro.id);
                 if (isCartAddProduct) {
-                  return ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.grey,
-                          padding: EdgeInsets.all(20),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12))),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(CartShopPage.routeName);
-                      },
-                      icon: Icon(Icons.shopping_cart),
-                      label: Text(
-                        "Savatchaga borish",
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
-                      ));
+                  return Container(
+                    height: 50,
+                    child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12))),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(CartShopPage.routeName);
+                        },
+                        icon: Icon(Icons.shopping_cart),
+                        label: Text(
+                          "Savatchaga borish",
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        )),
+                  );
                 } else {
                   return ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
