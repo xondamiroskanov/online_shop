@@ -103,7 +103,7 @@ class _EditNewAddProductState extends State<EditNewAddProduct> {
                 return AlertDialog(
                   title: const Text("Xatolik"),
                   content:
-                      const Text("Mahsulot qo'shishda xatolik sodir bo'ldi"),
+                      const Text("Mahsulotni tahrirlashda xatolik yuz berdi"),
                   actions: [
                     TextButton(
                       onPressed: () {

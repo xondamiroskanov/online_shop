@@ -40,7 +40,7 @@ class _CartShopPageState extends State<CartShopPage> {
                   color: Colors.black87,
                 ),
               ),
-              Spacer(),
+             const Spacer(),
               Container(
                   height: 32,
                   width: 68,
